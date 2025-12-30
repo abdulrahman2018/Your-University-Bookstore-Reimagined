@@ -10,9 +10,10 @@ interface NavbarProps {
   onAdminClick: () => void;
   admin: AdminUser | null;
   onLogout: () => void;
+  onAuthClick?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onListBook, onGoHome, onAdminClick, admin, onLogout }) => {
+const Navbar: React.FC<NavbarProps> = ({ onListBook, onGoHome, onAdminClick, admin, onLogout, onAuthClick }) => {
   return (
     <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,6 +32,16 @@ const Navbar: React.FC<NavbarProps> = ({ onListBook, onGoHome, onAdminClick, adm
           </div>
 
           <div className="flex items-center gap-3">
+            {onAuthClick && (
+              <Button 
+                variant="outline" 
+                onClick={onAuthClick}
+                className="hidden sm:flex"
+              >
+                Sign In / Create Account
+              </Button>
+            )}
+            
             <Button 
               variant="outline" 
               className="hidden sm:flex"
