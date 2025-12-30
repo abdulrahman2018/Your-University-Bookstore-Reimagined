@@ -1,0 +1,5 @@
+{
+  "name": "BUE Book Marketplace",
+  "description": "A comprehensive textbook marketplace for university students featuring secure PDF previews, seller listings with auto-moderation, and a robust admin dashboard.",
+  "requestFramePermissions": []
+}
