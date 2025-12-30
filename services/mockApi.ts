@@ -1,9 +1,11 @@
 
-import { Book, AdminUser, University, BookStatus } from '../types';
+import { Book, AdminUser, User, University, BookStatus } from '../types';
 import { MOCK_BOOKS, PIRACY_KEYWORDS } from '../constants';
 
 const STORAGE_KEY = 'bue_marketplace_books';
 const ADMIN_KEY = 'bue_marketplace_admin';
+const USERS_KEY = 'bue_marketplace_users';
+const CURRENT_USER_KEY = 'bue_marketplace_current_user';
 
 class MockApiService {
   private books: Book[] = [];
@@ -94,6 +96,66 @@ class MockApiService {
 
   async logout() {
     localStorage.removeItem(ADMIN_KEY);
+    localStorage.removeItem(CURRENT_USER_KEY);
+  }
+
+  // User Authentication Methods
+  async signup(email: string, password: string, postalCode: string, university: string): Promise<{ success: boolean; user?: User; message?: string }> {
+    const users = this.getUsers();
+    
+    // Check if user already exists
+    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+      return { success: false, message: 'An account with this email already exists.' };
+    }
+
+    const newUser: User = {
+      id: Math.random().toString(36).substr(2, 9),
+      email: email.toLowerCase(),
+      postalCode,
+      university,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Store user with password (in real app, password would be hashed)
+    const userWithPassword = { ...newUser, password };
+    users.push(userWithPassword);
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+
+    // Auto-login after signup
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newUser));
+    
+    return { success: true, user: newUser };
+  }
+
+  async login(email: string, password: string): Promise<{ success: boolean; user?: User; message?: string }> {
+    const users = this.getUsers();
+    const user = users.find(
+      u => u.email.toLowerCase() === email.toLowerCase() && (u as any).password === password
+    );
+
+    if (!user) {
+      return { success: false, message: 'Invalid email or password.' };
+    }
+
+    // Remove password before storing current user
+    const { password: _, ...userWithoutPassword } = user as any;
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
+
+    return { success: true, user: userWithoutPassword as User };
+  }
+
+  getCurrentUser(): User | null {
+    const stored = localStorage.getItem(CURRENT_USER_KEY);
+    return stored ? JSON.parse(stored) : null;
+  }
+
+  logoutUser() {
+    localStorage.removeItem(CURRENT_USER_KEY);
+  }
+
+  private getUsers(): any[] {
+    const stored = localStorage.getItem(USERS_KEY);
+    return stored ? JSON.parse(stored) : [];
   }
 
   async getAdminBooks(status?: BookStatus): Promise<Book[]> {

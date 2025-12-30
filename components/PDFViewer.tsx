@@ -71,23 +71,32 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl, bookTitle, onClose, selle
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-slate-900 flex flex-col no-select">
+    <div className="fixed inset-0 z-[100] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col no-select">
       {/* Header */}
-      <div className="h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-6 shrink-0">
+      <div className="h-20 bg-slate-800/95 backdrop-blur-xl border-b border-slate-700/50 flex items-center justify-between px-6 shrink-0 shadow-xl">
         <div className="flex items-center gap-4 text-white">
-          <ShieldAlert className="w-6 h-6 text-indigo-400" />
+          <div className="p-2.5 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+            <ShieldAlert className="w-6 h-6 text-white" />
+          </div>
           <div>
-            <h2 className="font-bold text-lg leading-tight">{bookTitle}</h2>
-            <p className="text-xs text-slate-400">Secure Preview Mode (Read-only)</p>
+            <h2 className="font-bold text-xl leading-tight">{bookTitle}</h2>
+            <p className="text-xs text-slate-400 font-medium">Secure Preview Mode (Read-only)</p>
           </div>
         </div>
         
-        <div className="flex items-center gap-6">
-          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${timeLeft < 60 ? 'bg-rose-500/20 text-rose-400' : 'bg-slate-700 text-indigo-300'}`}>
+        <div className="flex items-center gap-4">
+          <div className={`flex items-center gap-2.5 px-4 py-2 rounded-xl shadow-lg transition-all ${
+            timeLeft < 60 
+              ? 'bg-gradient-to-r from-rose-500/20 to-rose-600/20 text-rose-300 border border-rose-500/30' 
+              : 'bg-gradient-to-r from-indigo-500/20 to-purple-600/20 text-indigo-300 border border-indigo-500/30'
+          }`}>
             <Clock className="w-4 h-4" />
-            <span className="font-mono font-bold">{formatTime(timeLeft)}</span>
+            <span className="font-mono font-bold text-sm">{formatTime(timeLeft)}</span>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-slate-700 rounded-lg text-slate-400">
+          <button 
+            onClick={onClose} 
+            className="p-2.5 hover:bg-slate-700/50 rounded-xl text-slate-300 hover:text-white transition-all duration-200"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -97,18 +106,31 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl, bookTitle, onClose, selle
       <div className="flex-1 relative overflow-hidden bg-slate-950 flex justify-center">
         {isExpired ? (
           <div className="flex flex-col items-center justify-center text-center p-8 max-w-md">
-            <div className="w-20 h-20 bg-rose-500/10 rounded-full flex items-center justify-center mb-6">
-              <Clock className="w-10 h-10 text-rose-500" />
+            <div className="relative mb-8">
+              <div className="absolute inset-0 bg-rose-500/20 rounded-full blur-2xl"></div>
+              <div className="relative w-24 h-24 bg-gradient-to-br from-rose-500/20 to-rose-600/20 rounded-3xl flex items-center justify-center border border-rose-500/30 shadow-2xl">
+                <Clock className="w-12 h-12 text-rose-400" />
+              </div>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">Preview Expired</h3>
-            <p className="text-slate-400 mb-8">
+            <h3 className="text-3xl font-bold text-white mb-3">Preview Expired</h3>
+            <p className="text-slate-400 mb-10 leading-relaxed text-lg">
               Your 10-minute preview session has ended. To continue reading or get the full book, please contact the seller directly.
             </p>
             <div className="flex gap-4">
-              <Button onClick={handleContactSeller} variant="primary" size="lg">
+              <Button 
+                onClick={handleContactSeller} 
+                variant="primary" 
+                size="lg"
+                className="shadow-xl shadow-indigo-500/30 hover:shadow-2xl transition-all"
+              >
                 Contact Seller Now
               </Button>
-              <Button onClick={onClose} variant="outline" size="lg" className="text-white border-slate-700">
+              <Button 
+                onClick={onClose} 
+                variant="outline" 
+                size="lg" 
+                className="text-white border-slate-600 hover:bg-slate-700/50 transition-all"
+              >
                 Exit Preview
               </Button>
             </div>
@@ -122,10 +144,15 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl, bookTitle, onClose, selle
             />
             
             {isBlurred && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/60 backdrop-blur-md z-10 text-center px-6">
-                <Lock className="w-16 h-16 text-indigo-400 mb-4" />
-                <h4 className="text-xl font-bold text-white mb-2">Security Pause</h4>
-                <p className="text-slate-300">Click back into the window to resume reading.</p>
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/80 backdrop-blur-xl z-10 text-center px-6">
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-2xl"></div>
+                  <div className="relative p-6 bg-gradient-to-br from-indigo-500/20 to-purple-600/20 rounded-3xl border border-indigo-500/30">
+                    <Lock className="w-16 h-16 text-indigo-300" />
+                  </div>
+                </div>
+                <h4 className="text-2xl font-bold text-white mb-3">Security Pause</h4>
+                <p className="text-slate-300 text-lg">Click back into the window to resume reading.</p>
               </div>
             )}
           </div>

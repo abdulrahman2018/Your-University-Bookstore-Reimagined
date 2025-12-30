@@ -93,16 +93,16 @@ const AdminDashboard: React.FC = () => {
     };
     
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+      <div className="bg-white rounded-2xl shadow-md border border-slate-200/60 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-slate-600 mb-1">{title}</p>
-            <p className="text-3xl font-bold text-slate-900">{value}</p>
-            {subtitle && <p className="text-xs text-slate-500 mt-1">{subtitle}</p>}
-            {trend && <p className="text-xs text-emerald-600 mt-1 font-medium">{trend}</p>}
+            <p className="text-sm font-semibold text-slate-600 mb-2 uppercase tracking-wide">{title}</p>
+            <p className="text-4xl font-extrabold text-slate-900 mb-2">{value}</p>
+            {subtitle && <p className="text-xs text-slate-500 mt-1 font-medium">{subtitle}</p>}
+            {trend && <p className="text-xs text-emerald-600 mt-2 font-semibold flex items-center gap-1">{trend}</p>}
           </div>
-          <div className={`${colors[color]} p-3 rounded-lg`}>
-            <Icon className="w-6 h-6" />
+          <div className={`${colors[color]} p-4 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+            <Icon className="w-7 h-7" />
           </div>
         </div>
       </div>
@@ -110,19 +110,28 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-8">
+    <div className="max-w-7xl mx-auto p-4 sm:p-8 bg-gradient-to-b from-slate-50 to-white min-h-screen">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Stock Inventory Dashboard</h1>
-          <p className="text-slate-500">Real-time inventory management - Approved books only</p>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="p-2.5 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl shadow-lg">
+              <BarChart3 className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-extrabold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                Stock Inventory Dashboard
+              </h1>
+              <p className="text-slate-500 text-sm mt-1">Real-time inventory management - Approved books only</p>
+            </div>
+          </div>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Button
             variant="outline"
             onClick={fetchStockData}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 border-slate-200 hover:bg-slate-50 shadow-sm transition-all"
           >
             <RefreshCcw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh Now
@@ -130,7 +139,7 @@ const AdminDashboard: React.FC = () => {
           <Button
             variant={autoRefresh ? "primary" : "outline"}
             onClick={() => setAutoRefresh(!autoRefresh)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 shadow-md shadow-indigo-500/20 hover:shadow-lg transition-all"
           >
             {autoRefresh ? 'Auto: ON' : 'Auto: OFF'}
           </Button>
@@ -174,9 +183,11 @@ const AdminDashboard: React.FC = () => {
           {/* Stock Distribution Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Stock by University */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-indigo-600" />
+            <div className="bg-white rounded-2xl shadow-md border border-slate-200/60 p-6">
+              <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="p-2 bg-indigo-100 rounded-lg">
+                  <BarChart3 className="w-5 h-5 text-indigo-600" />
+                </div>
                 Stock by University
               </h3>
               <div className="space-y-3">
@@ -202,9 +213,11 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Stock by Condition */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-emerald-600" />
+            <div className="bg-white rounded-2xl shadow-md border border-slate-200/60 p-6">
+              <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="p-2 bg-emerald-100 rounded-lg">
+                  <TrendingUp className="w-5 h-5 text-emerald-600" />
+                </div>
                 Stock by Condition
               </h3>
               <div className="space-y-3">
@@ -232,15 +245,15 @@ const AdminDashboard: React.FC = () => {
       )}
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
+      <div className="bg-white rounded-2xl shadow-md border border-slate-200/60 p-5 mb-8">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
               placeholder="Search by title, author, seller, or subject..."
-              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+              className="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-slate-50 focus:bg-white shadow-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -248,7 +261,7 @@ const AdminDashboard: React.FC = () => {
 
           {/* University Filter */}
           <select
-            className="px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white"
+            className="px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50 focus:bg-white shadow-sm cursor-pointer font-medium"
             value={universityFilter}
             onChange={(e) => setUniversityFilter(e.target.value as University | 'all')}
           >
@@ -261,9 +274,9 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Stock Inventory Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-          <h2 className="text-lg font-bold text-slate-900">
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden">
+        <div className="px-6 py-5 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+          <h2 className="text-xl font-bold text-slate-900">
             Current Stock ({filteredBooks.length} titles, {filteredBooks.reduce((sum, b) => sum + b.quantity, 0)} items)
           </h2>
           {searchTerm && (

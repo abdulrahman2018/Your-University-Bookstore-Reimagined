@@ -32,3 +32,11 @@ export interface AdminUser {
   username: string;
   token: string;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  postalCode: string;
+  university: string;
+  createdAt: string;
+}
